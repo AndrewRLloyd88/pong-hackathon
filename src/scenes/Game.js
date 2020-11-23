@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import mp3 from "../assets/Orbital Colossus.mp3";
-import background from "../assets/scifi_platform_BG1.jpg";
-import tiles from "../assets/scifi_platformTiles_32x32.png";
+import background from "../assets/bg.jpg";
+import bg from "../assets/bg.jpg";
+import tiles from "../assets/sprites.png";
 import star from "../assets/star.png";
 import { accelerate, decelerate } from "../utils";
 
@@ -15,11 +16,11 @@ export default new Phaser.Class({
     window.GAME = this;
   },
   preload: function preload() {
-    this.load.image("background", background);
+    this.load.image("background", bg);
 
     this.load.spritesheet("tiles", tiles, {
-      frameWidth: 32,
-      frameHeight: 32,
+      frameWidth: 40,
+      frameHeight: 150,
     });
 
     this.load.image("star", star);
@@ -27,9 +28,10 @@ export default new Phaser.Class({
   create: function create() {
     this.add.image(400, 300, "background");
 
+    //all for stars which we're going to replace with ball
     const stars = this.physics.add.group({
       key: "star",
-      repeat: 11,
+      repeat: 0,
       setScale: { x: 0.2, y: 0.2 },
       setXY: { x: 400, y: 300 },
     });
@@ -47,16 +49,17 @@ export default new Phaser.Class({
     box = this.physics.add.image(400, 100, "tiles", 15);
 
     const processCollision = (box, star) => {
-      star.destroy();
+      // star.destroy();
       const starsLeft = stars.countActive();
       if (starsLeft === 0) {
         this.scene.start("winscreen");
       }
     };
 
+    //this line adds the collision for paddle - ball
     this.physics.add.collider(stars, box, processCollision, null, this);
 
-    box.setBounce(1, 1);
+    box.setBounce(1, 0, 5);
     box.setCollideWorldBounds(true);
   },
   update: function () {
