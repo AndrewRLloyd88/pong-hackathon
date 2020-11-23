@@ -6,7 +6,8 @@ import tiles from "../assets/sprites.png";
 import star from "../assets/star.png";
 import { accelerate, decelerate } from "../utils";
 
-let box;
+let paddle;
+let paddle2;
 let cursors;
 
 export default new Phaser.Class({
@@ -46,9 +47,12 @@ export default new Phaser.Class({
 
     cursors = this.input.keyboard.createCursorKeys();
 
-    box = this.physics.add.image(400, 100, "tiles", 15);
+    //paddle1
+    paddle = this.physics.add.image(800, 300, "tiles", 15);
+    //paddle2
+    paddle2 = this.physics.add.image(600, 100, "tiles", 15);
 
-    const processCollision = (box, star) => {
+    const processCollision = (paddle, star) => {
       // star.destroy();
       const starsLeft = stars.countActive();
       if (starsLeft === 0) {
@@ -57,23 +61,23 @@ export default new Phaser.Class({
     };
 
     //this line adds the collision for paddle - ball
-    this.physics.add.collider(stars, box, processCollision, null, this);
+    this.physics.add.collider(stars, paddle, processCollision, null, this);
 
-    box.setBounce(1, 0, 5);
-    box.setCollideWorldBounds(true);
+    paddle.setBounce(0.5, 0.5);
+    paddle.setCollideWorldBounds(true);
   },
   update: function () {
-    const { velocity } = box.body;
+    const { velocity } = paddle.body;
 
     if (cursors.space.isDown) {
       const x = decelerate(velocity.x);
       const y = decelerate(velocity.y);
-      box.setVelocity(x, y);
+      paddle.setVelocity(x, y);
     }
 
-    if (cursors.up.isDown) box.setVelocityY(accelerate(velocity.y, -1));
-    if (cursors.right.isDown) box.setVelocityX(accelerate(velocity.x, 1));
-    if (cursors.down.isDown) box.setVelocityY(accelerate(velocity.y, 1));
-    if (cursors.left.isDown) box.setVelocityX(accelerate(velocity.x, -1));
+    if (cursors.up.isDown) paddle.setVelocityY(accelerate(velocity.y, -1));
+    if (cursors.right.isDown) paddle.setVelocityX(accelerate(velocity.x, 1));
+    if (cursors.down.isDown) paddle.setVelocityY(accelerate(velocity.y, 1));
+    if (cursors.left.isDown) paddle.setVelocityX(accelerate(velocity.x, -1));
   },
 });
