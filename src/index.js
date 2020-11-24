@@ -3,21 +3,21 @@ import MainMenu from "./scenes/MainMenu";
 import Game from "./scenes/Game";
 import WinScreen from "./scenes/WinScreen";
 
-var config = {
+// Resolution setting for the game
+const resolution = {
+  width: 800,
+  height: 600,
+};
+
+// Configuration for phaser
+const config = {
   type: Phaser.AUTO,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
-    height: 600,
-  },
+  width: resolution.width,
+  height: resolution.height,
   physics: {
     default: "arcade",
-    arcade: {
-      gravity: { y: 0, x: 0 },
-    },
   },
   scene: [MainMenu, Game, WinScreen],
 };
 
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config);

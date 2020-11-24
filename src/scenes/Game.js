@@ -1,13 +1,15 @@
 import Phaser from "phaser";
 import mp3 from "../assets/Orbital Colossus.mp3";
-import background from "../assets/bg.jpg";
+import background from "../assets/scifi_platform_BG1.jpg";
+import ball from "../assets/ball.png";
+import paddle1 from "../assets/paddle1.png";
+import paddle2 from "../assets/paddle2.png";
 import bg from "../assets/bg.jpg";
-import tiles from "../assets/sprites.png";
+import tiles from "../assets/scifi_platformTiles_32x32.png";
 import star from "../assets/star.png";
 import { accelerate, decelerate } from "../utils";
 
-let paddle;
-let paddle2;
+let paddleP1;
 let cursors;
 
 export default new Phaser.Class({
@@ -17,19 +19,15 @@ export default new Phaser.Class({
     window.GAME = this;
   },
   preload: function preload() {
-    this.load.image("background", bg);
-
-    this.load.spritesheet("tiles", tiles, {
-      frameWidth: 40,
-      frameHeight: 150,
-    });
+    this.load.image("bg", bg);
+    this.load.image("paddle1", paddle1);
 
     this.load.image("star", star);
   },
   create: function create() {
-    this.add.image(400, 300, "background");
+    this.add.image(400, 300, "bg");
+    this.add.image("paddle1", paddle1);
 
-    //all for stars which we're going to replace with ball
     const stars = this.physics.add.group({
       key: "star",
       repeat: 0,
@@ -47,12 +45,9 @@ export default new Phaser.Class({
 
     cursors = this.input.keyboard.createCursorKeys();
 
-    //paddle1
-    paddle = this.physics.add.image(800, 300, "tiles", 15);
-    //paddle2
-    paddle2 = this.physics.add.image(600, 100, "tiles", 15);
+    paddleP1 = this.physics.add.image(700, 300, "paddle1");
 
-    const processCollision = (paddle, star) => {
+    const processCollision = (paddleP1, star) => {
       // star.destroy();
       const starsLeft = stars.countActive();
       if (starsLeft === 0) {
@@ -60,24 +55,23 @@ export default new Phaser.Class({
       }
     };
 
-    //this line adds the collision for paddle - ball
-    this.physics.add.collider(stars, paddle, processCollision, null, this);
+    this.physics.add.collider(stars, paddleP1, processCollision, null, this);
 
-    paddle.setBounce(0.5, 0.5);
-    paddle.setCollideWorldBounds(true);
+    paddleP1.setBounce(1, 1);
+    paddleP1.setCollideWorldBounds(true);
   },
   update: function () {
-    const { velocity } = paddle.body;
+    const { velocity } = paddleP1.body;
 
     if (cursors.space.isDown) {
       const x = decelerate(velocity.x);
       const y = decelerate(velocity.y);
-      paddle.setVelocity(x, y);
+      paddleP1.setVelocity(x, y);
     }
 
-    if (cursors.up.isDown) paddle.setVelocityY(accelerate(velocity.y, -1));
-    if (cursors.right.isDown) paddle.setVelocityX(accelerate(velocity.x, 1));
-    if (cursors.down.isDown) paddle.setVelocityY(accelerate(velocity.y, 1));
-    if (cursors.left.isDown) paddle.setVelocityX(accelerate(velocity.x, -1));
+    if (cursors.up.isDown) paddleP1.setVelocityY(accelerate(velocity.y, -1));
+    if (cursors.right.isDown) paddleP1.setVelocityX(accelerate(velocity.x, 1));
+    if (cursors.down.isDown) paddleP1.setVelocityY(accelerate(velocity.y, 1));
+    if (cursors.left.isDown) paddleP1.setVelocityX(accelerate(velocity.x, -1));
   },
 });
