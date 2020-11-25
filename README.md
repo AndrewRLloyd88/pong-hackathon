@@ -67,9 +67,9 @@ As a user, if I select 1 player and start the game
 
 As a user, the court will appear and an Indication as of which side I am on will be shown
 
-As a user, if I press the up arrow on my keyboard my paddle will move up
+As a user, if I press the up arrow on my keyboard my paddle will move up X
 
-As a user, if I press the down arrow on my keyboard my paddle will move down
+As a user, if I press the down arrow on my keyboard my paddle will move down X
 
 As a user, I will start with the ball, to serve I shall press either the left or right arrow key to serve based on court position
 
@@ -77,13 +77,13 @@ As a user, after I serve I will see the ball travel across the court
 
 As a user, if the ball collides with the wall it will change direction
 
-As a user, I can see that if a ball hits a paddle that it will send the ball back
+As a user, I can see that if a ball hits a paddle that it will send the ball back X
 
 As a user, I can see that if a ball misses a paddle the opposing side will get a point
 
 As a user, If someone scores 7 points they will will win the game
 
-As a user, I can see that player 2 is controlled by a computer
+As a user, I can see that player 2 is controlled by a computer X
 
 As a user if I select 2 player (Include all game mechanics from player one as well as)
 
