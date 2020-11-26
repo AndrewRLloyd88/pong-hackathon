@@ -1,6 +1,6 @@
 # PhaserPong
 
-Jeopardy game built for [Mintbean JavaScript GameHacks: Classic Pong](https://www.mintbean.io/meets). This was a one week hackathon running from November 20 - 27, 2020.
+Pong game built for [Mintbean JavaScript GameHacks: Classic Pong](https://www.mintbean.io/meets). This was a one week hackathon running from November 20 - 27, 2020.
 
 ## Table of Contents
 
