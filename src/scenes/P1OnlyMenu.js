@@ -19,10 +19,15 @@ export default new Phaser.Class({
     this.add.text(270, 315, "To serve press right");
     this.add.text(270, 330, "Move with up, down, left, right.");
     this.add.text(270, 345, "Press spacebar to brake.");
+    this.add.text(270, 445, "Press left to return to main menu.");
   },
   update: function () {
     if (cursors.space.isDown) {
       this.scene.start("game");
+    }
+
+    if (cursors.left.isDown) {
+      this.scene.start("mainmenu");
     }
   },
 });
