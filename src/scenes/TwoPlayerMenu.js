@@ -23,7 +23,7 @@ export default new Phaser.Class({
   },
   update: function () {
     if (cursors.space.isDown) {
-      this.scene.start("game");
+      this.scene.start("2pgame");
     }
 
     if (cursors.left.isDown) {

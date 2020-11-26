@@ -75,7 +75,7 @@ export default new Phaser.Class({
       align: "center",
     });
 
-    cpuText = this.add.text(550, 20, "CPU:", {
+    cpuText = this.add.text(580, 20, "P2:", {
       font: "48px Gabriella",
       fill: "#0000FF",
       align: "center",
