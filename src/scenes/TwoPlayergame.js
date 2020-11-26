@@ -22,6 +22,7 @@ let ball_velocity;
 let p1scored = false;
 let p2scored = false;
 let firstLaunch = true;
+let keys;
 
 let score1;
 let score2;
@@ -29,7 +30,7 @@ let score2;
 export default new Phaser.Class({
   Extends: Phaser.Scene,
   initialize: function () {
-    Phaser.Scene.call(this, { key: "game" });
+    Phaser.Scene.call(this, { key: "2pgame" });
     window.GAME = this;
   },
   preload: function preload() {
@@ -82,14 +83,17 @@ export default new Phaser.Class({
 
     ball = this.physics.add.image(100, 300, "ballimg");
     ball.setScale(1.5, 1.5);
-    // ball.setBounceY(Phaser.Math.FloatBetween(0.5, 0.8));
-    // ball.setVelocityX(150 - Math.random() * 400);
-    // ball.setVelocityY(150 - Math.random() * 400);
     ball.setBounce(1, 1);
 
     ball.setCollideWorldBounds(true);
 
     cursors = this.input.keyboard.createCursorKeys();
+    this.keys = this.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+    });
 
     //declaring our P1 controlled paddle at X 10 and Y 300 (half of our canvas size)
     paddleP1 = this.physics.add.image(10, 300, "paddle1");
@@ -127,12 +131,16 @@ export default new Phaser.Class({
       if (!ball_launched) {
         paddleP1.body.maxVelocity.x = 0;
         paddleP1.body.maxVelocity.y = 0;
+        paddleP2.body.maxVelocity.x = 0;
+        paddleP2.body.maxVelocity.y = 0;
         if (cursors.right.isDown && p2scored) {
           ball.setBounceY(Phaser.Math.FloatBetween(0.5, 0.9));
           ball.setVelocityX(100);
           ball.setVelocityY(150 - Math.random() * 400);
           paddleP1.body.maxVelocity.x = 250;
           paddleP1.body.maxVelocity.y = 250;
+          paddleP2.body.maxVelocity.x = 250;
+          paddleP2.body.maxVelocity.y = 250;
           p2scored = false;
           return (ball_launched = true);
         }
@@ -143,19 +151,21 @@ export default new Phaser.Class({
           ball.setVelocityY(150 - Math.random() * 400);
           paddleP1.body.maxVelocity.x = 250;
           paddleP1.body.maxVelocity.y = 250;
+          paddleP2.body.maxVelocity.x = 250;
+          paddleP2.body.maxVelocity.y = 250;
           firstLaunch = false;
           return (ball_launched = true);
         }
 
-        if (p1scored) {
-          setTimeout(() => {
-            paddleP1.body.maxVelocity.x = 250;
-            paddleP1.body.maxVelocity.y = 250;
-            p1scored = false;
-            ball.setBounceY(Phaser.Math.FloatBetween(0.5, 0.9));
-            ball.setVelocityX(-100);
-            ball.setVelocityY(150 - Math.random() * 400);
-          }, 2000);
+        if (this.keys.left.isDown && p1scored) {
+          p1scored = false;
+          ball.setBounceY(Phaser.Math.FloatBetween(0.5, 0.9));
+          ball.setVelocityX(-100);
+          ball.setVelocityY(150 - Math.random() * 400);
+          paddleP1.body.maxVelocity.x = 250;
+          paddleP1.body.maxVelocity.y = 250;
+          paddleP2.body.maxVelocity.x = 250;
+          paddleP2.body.maxVelocity.y = 250;
           return (ball_launched = true);
         }
       }
@@ -166,32 +176,22 @@ export default new Phaser.Class({
         this.scene.start("p1winscreen");
       }
       if (score2 === 7) {
-        this.scene.start("cpuwinscreen");
+        this.scene.start("p2winscreen");
       }
       return;
     };
 
     checkWin();
     launch_ball();
-    let targetVelocity = ball.body.velocity.y;
+    let paddleP2Velocityx = 0;
+    let paddleP2Velocityy = 0;
     const { velocity } = paddleP1.body;
     //setting score text to be value of our scores
     score1_text.text = score1;
     score2_text.text = score2;
 
-    //CPU logic - mimic the balls velocity on the Y axis
-    paddleP2.body.setVelocity(ball.body.velocity.y);
-    //move in the opposite X direction at half the speed (tweak for higher CPU difficulty)
-
-    //limit the max Y velocity
-    paddleP2.body.maxVelocity.y = 100;
-    //limit the max X velocity
-    paddleP2.body.maxVelocity.X = 100;
-    paddleP2.body.velocity.x = -ball.body.velocity.x * 0.5;
-
     //this function resets the playfield if P2 scores
     const resetSceneWhenP2Scores = () => {
-      console.log(paddleP1);
       let x = 0;
       let y = 0;
       //reset the paddles position
@@ -228,7 +228,7 @@ export default new Phaser.Class({
       ball.setVelocity(0, 0);
     };
 
-    //check to see if the ball collides with left or right
+    // check to see if the ball collides with left or right
     if (ball.body.blocked.left) {
       score2++;
       resetSceneWhenP2Scores();
@@ -252,5 +252,10 @@ export default new Phaser.Class({
     if (cursors.right.isDown) paddleP1.setVelocityX(accelerate(velocity.x, 1));
     if (cursors.down.isDown) paddleP1.setVelocityY(accelerate(velocity.y, 1));
     if (cursors.left.isDown) paddleP1.setVelocityX(accelerate(velocity.x, -1));
+
+    if (this.keys.up.isDown) paddleP2.setVelocityY(accelerate(0, -15));
+    if (this.keys.right.isDown) paddleP2.setVelocityX(accelerate(0, 15));
+    if (this.keys.down.isDown) paddleP2.setVelocityY(accelerate(0, 15));
+    if (this.keys.left.isDown) paddleP2.setVelocityX(accelerate(0, -15));
   },
 });
