@@ -17,7 +17,7 @@ Pong game built for [Mintbean JavaScript GameHacks: Classic Pong](https://www.mi
 
 ### Live Deploy
 
-<b>Check out the app on Netlify at [https://dashboard.featurepeek.com/peek/7m4hd31m#/](https://dashboard.featurepeek.com/peek/7m4hd31m#/)</b>
+<b>Check out the app on FeaturePeek at [https://dashboard.featurepeek.com/peek/7m4hd31m#/](https://dashboard.featurepeek.com/peek/7m4hd31m#/)</b>
 
 ### The Challenge
 
